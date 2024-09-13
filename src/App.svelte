@@ -3,8 +3,12 @@
 
   import SingleDataFetcher from "./components/singleDataFetcher.svelte";
   import DynamicChart from "./components/dynamicChart.svelte";
+  import Chart from "./components/chart.svelte";
   import SummaryCard from "./components/SummaryCard.svelte";
   import DataTable from "./components/dataTable.svelte";
+  import PopulationByAge from "./components/populationByAge.svelte";
+
+  import NewPopulationPyramid from "./components/newPopulationPyramid.svelte";
 
   const LanguageStatusMap = {
     "0500": "Swedish",
@@ -318,13 +322,9 @@
       // Add other fields if necessary
     }));
   }
-
-  
 </script>
 
 <main>
- 
-
   <header>
     <h1>Population Census Dashboard</h1>
   </header>
@@ -358,10 +358,10 @@
         dataKey="Number_of_Elderly"
       />
     </section>
+
     <section class="card-container">
-      <SummaryCard
-        apiUrl="/api/population-by-age"
-        title="Population between age group 20 & 30"
+      <PopulationByAge
+        apiUrl="/api/population-by-age-range"
         dataMap={genderMap}
         labelField="kjonn"
         valueField="Number_of_Persons"
@@ -388,7 +388,7 @@
 
     <section class="table-container">
       <DataTable
-        title="Names of people(norwegian ethnicity in 1910 census)"
+        title="Names of people(norwegian ethnicity)"
         columns={["first name", "last name"]}
         apiUrl="/api/population-by-names"
         transformData={mapNames}
@@ -404,99 +404,25 @@
       />
     </section>
 
+  
     <section class="chart-container">
-      <DynamicChart
-        apiUrl="/api/population-by-ethnicity"
-        title="Population by Ethnicity"
-        statusMap={ethnicityMap}
-        label="Number of Persons by Ethnicity"
-        labelField="etnisitet_fars_etnisitet_i_1875"
-        itemMapping={(item) => item.Number_of_Persons}
-      />
-    </section>
-    <section class="chart-container">
-      <DynamicChart
-        apiUrl="/api/population-by-religion"
-        title="Population by religion"
+      <Chart
+        apiUrl="/api/population-by-group"
+        title="Population in chart "
         statusMap={religionMap}
         label="Number of Persons by Religion"
         labelField="religion"
         itemMapping={(item) => item.Number_of_Persons}
       />
     </section>
-    <section class="chart-container">
-      <DynamicChart
-        apiUrl="/api/population-by-familyPosition"
-        title="Population by Family Position"
-        statusMap={familyPositionMap}
-        label="Number of Persons by Family Position"
-        labelField="famstatus_pos_en"
-        itemMapping={(item) => item.Number_of_Persons}
-      />
-    </section>
-    <section class="chart-container">
-      <DynamicChart
-        apiUrl="/api/population-by-maritalStatus"
-        title="Population by Marital Status"
-        statusMap={maritalStatusMap}
-        label="Number of Persons by Marital Status"
-        labelField="sivilstatus"
-        itemMapping={(item) => item.Number_of_Persons}
-      />
-    </section>
-    <section class="chart-container">
-      <DynamicChart
-        apiUrl="/api/population-by-primary-occupation"
-        title="Population by Primary Occupation Status"
-        statusMap={primaryOccupationStatusMap}
-        label="Number of Persons by Primary Occupation"
-        labelField="occ_hierarkisk_hovedyrke"
-        itemMapping={(item) => item.Number_of_Persons}
-      />
-    </section>
-    <section class="chart-container">
-      <DynamicChart
-        apiUrl="/api/population-by-secondary-occupation"
-        title="Population by Secondary Occupation Status"
-        statusMap={secondaryOccupationStatusMap}
-        label="Number of Persons by Secondary Occupation"
-        labelField="occ_hierarkisk_biyrke"
-        itemMapping={(item) => item.Number_of_Persons}
-      />
-    </section>
-    <section class="chart-container">
-      <DynamicChart
-        apiUrl="/api/population-by-medical-condition"
-        title="Population by Medical Conditions"
-        statusMap={medicalConditionStatusMap}
-        label="Number of Persons by Medical Condition"
-        labelField="sykdom"
-        itemMapping={(item) => item.Number_of_Persons}
-      />
-    </section>
-    <section class="chart-container">
-      <DynamicChart
-        apiUrl="/api/population-by-language"
-        title="Population by Language"
-        statusMap={LanguageStatusMap}
-        label="Number of Persons by Language"
-        labelField="spraak"
-        itemMapping={(item) => item.Number_of_Persons}
-      />
-    </section>
-    <section class="chart-container">
-      <DynamicChart
-        apiUrl="/api/population-by-citizenship"
-        title="Population by Citizenship"
-        statusMap={citizenshipStatusMap}
-        label="Number of Persons by Citizenship"
-        labelField="statsborgerskap"
-        itemMapping={(item) => item.Number_of_Persons}
-      />
-    </section>
+
+    <NewPopulationPyramid />
+   
+  
+  
   </div>
 
   <footer class="footer">
-    <p>&copy; 2024 Population Census Dashboard. All rights reserved.</p>
+    <p>&copy; UiT</p>
   </footer>
 </main>
