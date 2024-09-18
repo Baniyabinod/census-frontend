@@ -52,7 +52,7 @@
 
     <button on:click={fetchPopulationByAge} disabled={loading}>
       {#if loading}
-        <span class="loader"></span> Loading...
+        Fetching...
       {:else}
         Fetch Population
       {/if}
@@ -153,19 +153,6 @@
   .input-container button:disabled {
     background-color: #7f8c8d; /* Gray color when disabled */
     cursor: not-allowed;
-  }
-
-  .loader {
-    border: 4px solid rgba(0, 0, 0, 0.1); /* Light border */
-    border-radius: 50%;
-    border-top: 4px solid #3498db; /* Primary color for loader */
-    width: 24px;
-    height: 24px;
-    animation: spin 1s linear infinite;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
   }
 
   @keyframes spin {

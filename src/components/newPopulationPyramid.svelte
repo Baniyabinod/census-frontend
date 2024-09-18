@@ -1,14 +1,16 @@
 <script>
   import { onMount } from "svelte";
   import Chart from "chart.js/auto";
+
   let data = [];
   let error = "";
   let chartContainer;
   let selectedOption = "gender"; // Default option
   let chartInstance;
+
   const options = {
     gender: {
-      url: "api/population-by-age-gender-group",
+      url: "/api/population-by-age-gender-group",
       map: {
         "0": "Other",
         "1": "Male",
@@ -16,7 +18,7 @@
       },
     },
     marital_status: {
-      url: "api/population-by-age-marital-group",
+      url: "/api/population-by-age-marital-group",
       map: {
         "1": "Married, spouse present",
         "2": "Married, spouse absent",
@@ -28,11 +30,11 @@
       },
     },
     total_population: {
-      url: "api/population-by-age-group",
-      map: null, // No mapping needed for total population
+      url: "/api/population-by-age-group",
+      map: null,
     },
     maritalStatusBasedOnGender: {
-      url: "api/population-by-age-gender-marital-group",
+      url: "/api/population-by-age-gender-marital-group",
       map: {
         "0_1": "Other, Married, spouse present",
         "0_2": "Other, Married, spouse absent",
@@ -58,7 +60,7 @@
       },
     },
     single_gender: {
-      url: "api/population-by-single-age-gender-group",
+      url: "/api/population-by-single-age-gender-group",
       map: {
         "0": "Other",
         "1": "Male",
@@ -66,6 +68,7 @@
       },
     },
   };
+
   async function fetchData() {
     try {
       const response = await fetch(options[selectedOption].url);
@@ -76,20 +79,25 @@
       error = e.message;
     }
   }
+
   function renderChart() {
     const ctx = chartContainer.getContext("2d");
+
     // Destroy existing chart instance if it exists
     if (chartInstance) {
       chartInstance.destroy();
     }
+
     // Sort data by age group
     data.sort((a, b) => {
       const ageA = parseInt(a.age_group.split("-")[0]);
       const ageB = parseInt(b.age_group.split("-")[0]);
       return ageA - ageB;
     });
+
     const ageGroups = [...new Set(data.map((item) => item.age_group))];
     let datasets;
+
     if (selectedOption === "total_population") {
       const numbers = data.map((item) => item.number_of_people);
       datasets = [
@@ -114,9 +122,11 @@
         "#33FF8C",
         "#FF3333",
       ];
+
       datasets = keys.map((key, index) => {
         const groupData = ageGroups.map((group) => {
           let item;
+
           if (selectedOption === "maritalStatusBasedOnGender") {
             const [gender, marital] = key.split("_");
             item = data.find(
@@ -132,8 +142,10 @@
               (d) => d.age_group === group && d[selectedOption] === key
             );
           }
+
           return item ? item.number_of_people : 0;
         });
+
         return {
           label: map[key],
           data: groupData,
@@ -141,6 +153,7 @@
         };
       });
     }
+
     chartInstance = new Chart(ctx, {
       type: "bar",
       data: {
@@ -148,103 +161,85 @@
         datasets: datasets,
       },
       options: {
-        indexAxis: "y", // Horizontal bar chart
+        indexAxis: "y",
         responsive: true,
         scales: {
           x: {
             stacked: true,
-            grid: {
-              color: "rgba(220, 220, 220, 0.3)", // Subtle grid lines
-            },
-            ticks: {
-              font: {
-                size: 12, // Font size for x-axis labels
-              },
-              color: "#666", // Color for x-axis labels
-            },
-            title: {
-              display: true,
-              text: "Number of People", // Title for x-axis
-              font: {
-                size: 14,
-                weight: "bold",
-              },
-              color: "#333",
-            },
           },
           y: {
             stacked: true,
-            reverse: true, // Flip the y-axis
-            grid: {
-              color: "rgba(220, 220, 220, 0.3)", // Subtle grid lines
-            },
-            ticks: {
-              font: {
-                size: 12, // Font size for y-axis labels
-              },
-              color: "#666", // Color for y-axis labels
-            },
-            title: {
-              display: true,
-              text: "Age Groups", // Title for y-axis
-              font: {
-                size: 14,
-                weight: "bold",
-              },
-              color: "#333",
-            },
-          },
-        },
-        plugins: {
-          legend: {
-            position: "top",
-          },
-          tooltip: {
-            callbacks: {
-              label: function (tooltipItem) {
-                return `Number of People: ${tooltipItem.raw}`;
-              },
-            },
+            reverse: true,
           },
         },
       },
     });
   }
+
   onMount(fetchData);
 </script>
 
 <div>
   <h1>Population Pyramid by Age and {selectedOption.replace("_", " ")}</h1>
-  <select bind:value={selectedOption} on:change={fetchData}>
+  <div class="options-container">
     {#each Object.keys(options) as key}
-      <option value={key}>{key.replace("_", " ")}</option>
+      <div
+        class="option {selectedOption === key ? 'selected' : ''}"
+        on:click={() => {
+          selectedOption = key;
+          fetchData();
+        }}
+      >
+        {key.replace("_", " ")}
+      </div>
     {/each}
-  </select>
+  </div>
   {#if error}
     <p>Error: {error}</p>
   {:else}
-    <canvas bind:this={chartContainer}></canvas>
+    <div class="chart-container">
+      <canvas bind:this={chartContainer}></canvas>
+    </div>
   {/if}
 </div>
 
 <style>
-  select {
+  .options-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .option {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
     border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 10px;
-    font-size: 16px;
     cursor: pointer;
-    transition:
-      background-color 0.3s,
-      border-color 0.3s;
+    transition: background-color 0.3s;
   }
 
-  select:focus {
-    outline: none;
-    border-color: #007bff;
+  .option.selected {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
   }
 
-  option {
-    padding: 10px;
+  .option:hover {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .chart-container {
+    position: relative;
+    height: 600px; /* Fixed height to stabilize the layout */
+    margin-top: 20px;
+  }
+
+  canvas {
+    width: 100% !important; /* Ensure canvas stretches to container width */
+    height: 100% !important; /* Ensure canvas stretches to container height */
   }
 </style>

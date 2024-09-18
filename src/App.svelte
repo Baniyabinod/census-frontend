@@ -365,7 +365,7 @@
 
     <section class="card-container">
       <PopulationByAge
-        apiUrl="/api/population-by-age-range"
+        apiUrl="/api/population-by-age-group"
         dataMap={genderMap}
         labelField="kjonn"
         valueField="Number_of_Persons"
