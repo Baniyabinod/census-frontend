@@ -1,15 +1,15 @@
 <script>
-  import { onMount } from 'svelte';
-  
+  import { onMount } from "svelte";
+
   let data = [];
-  let error = '';
+  let error = "";
   let showNames = false; // To control visibility of names
-  let searchQuery = ''; // For the search functionality
+  let searchQuery = ""; // For the search functionality
 
   onMount(async () => {
     try {
-      const response = await fetch('/api/population-by-names');
-      if (!response.ok) throw new Error('Network response was not ok.');
+      const response = await fetch("/api/population-by-names");
+      if (!response.ok) throw new Error("Network response was not ok.");
       data = await response.json();
     } catch (e) {
       error = e.message;
@@ -19,9 +19,10 @@
   // Function to filter data based on the search query
   function filteredData() {
     const query = searchQuery.toLowerCase();
-    return data.filter(item => 
-      item.fornavn.toLowerCase().includes(query) || 
-      item.etternavn.toLowerCase().includes(query)
+    return data.filter(
+      (item) =>
+        item.fornavn.toLowerCase().includes(query) ||
+        item.etternavn.toLowerCase().includes(query)
     );
   }
 </script>
@@ -32,16 +33,12 @@
   <p>Error: {error}</p>
 {:else}
   <!-- Toggle Button for Showing/Hiding Names -->
-  <button on:click={() => showNames = !showNames}>
-    {showNames ? 'Hide Names' : 'Show Names'}
+  <button on:click={() => (showNames = !showNames)}>
+    {showNames ? "Hide Names" : "Show Names"}
   </button>
 
   <!-- Search Box -->
-  <input 
-    type="text" 
-    placeholder="Search by name..." 
-    bind:value={searchQuery} 
-  />
+  <input type="text" placeholder="Search by name..." bind:value={searchQuery} />
 
   <!-- Displaying Filtered and Conditional Data -->
   {#if showNames}

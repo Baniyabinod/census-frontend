@@ -330,34 +330,38 @@
   </header>
 
   <div class="container">
-    <section class="single-data-container">
-      <SingleDataFetcher
-        apiUrl="/api/total-population"
-        title="Total Population in 1910 Census"
-        dataKey="Total_Population"
-      />
-    </section>
-    <section class="single-data-container">
-      <SingleDataFetcher
-        apiUrl="/api/total-children"
-        title="Total children in 1910 Census"
-        dataKey="Number_of_Children"
-      />
-    </section>
-    <section class="single-data-container">
-      <SingleDataFetcher
-        apiUrl="/api/total-adults"
-        title="Total adult(18-79) in 1910 Census"
-        dataKey="Number_of_Adults"
-      />
-    </section>
-    <section class="single-data-container">
-      <SingleDataFetcher
-        apiUrl="/api/total-elderly"
-        title="Total elderly population(above 80) in 1910 Census"
-        dataKey="Number_of_Elderly"
-      />
-    </section>
+    <div class="section-container">
+      <section class="single-data-container">
+        <SingleDataFetcher
+          apiUrl="/api/total-population"
+          title="Total Population in 1910 Census"
+          dataKey="Total_Population"
+        />
+      </section>
+      <section class="single-data-container">
+        <SingleDataFetcher
+          apiUrl="/api/total-children"
+          title="Total children in 1910 Census"
+          dataKey="Number_of_Children"
+        />
+      </section>
+    </div>
+    <div class="section-container">
+      <section class="single-data-container">
+        <SingleDataFetcher
+          apiUrl="/api/total-adults"
+          title="Total adult(18-79) in 1910 Census"
+          dataKey="Number_of_Adults"
+        />
+      </section>
+      <section class="single-data-container">
+        <SingleDataFetcher
+          apiUrl="/api/total-elderly"
+          title="Total elderly population(above 80) in 1910 Census"
+          dataKey="Number_of_Elderly"
+        />
+      </section>
+    </div>
 
     <section class="card-container">
       <PopulationByAge
@@ -404,7 +408,6 @@
       />
     </section>
 
-  
     <section class="chart-container">
       <Chart
         apiUrl="/api/population-by-group"
@@ -417,12 +420,55 @@
     </section>
 
     <NewPopulationPyramid />
-   
-  
-  
   </div>
 
   <footer class="footer">
     <p>&copy; UiT</p>
   </footer>
 </main>
+
+<style>
+  .table-container {
+    margin-bottom: 6;
+  }
+  .section-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between sections */
+    justify-content: center; /* Center sections horizontally */
+    padding: 20px; /* Padding around the container */
+  }
+
+  .single-data-container {
+    transition:
+      transform 0.3s,
+      box-shadow 0.3s,
+      background-color 0.3s; /* Smooth transitions */
+    max-width: 400px; /* Limit the maximum width of each section */
+    flex: 1; /* Allow sections to grow and shrink */
+  }
+
+  .single-data-container h2 {
+    margin-bottom: 16px; /* Space below the title */
+    font-size: 1.5em; /* Larger font size for titles */
+    color: #3498db; /* Blue color for titles */
+  }
+
+  .single-data-container p {
+    margin: 0; /* Remove default margin */
+    font-size: 1.1em; /* Slightly larger font size for better readability */
+    color: #333; /* Dark gray color for text */
+  }
+
+  @media (min-width: 768px) {
+    .section-container {
+      flex-direction: row; /* Row layout for larger screens */
+    }
+  }
+
+  @media (max-width: 767px) {
+    .section-container {
+      flex-direction: column; /* Stack sections vertically on small screens */
+    }
+  }
+</style>
