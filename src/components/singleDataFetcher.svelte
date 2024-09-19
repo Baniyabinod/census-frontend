@@ -32,7 +32,7 @@
     </div>
   {:else}
     <div class="card-body">
-      <p class="data">{data}</p>
+      <p class="data">{data ? Number(data).toLocaleString("en-IN") : "0"}</p>
     </div>
   {/if}
 </div>
@@ -40,6 +40,8 @@
 <style>
   /* Card container */
   .card {
+    width: 600px;
+    height: 200px;
     background-color: #ffffff; /* White background */
     border-radius: 12px; /* Slightly more rounded corners */
     padding: 24px; /* Increased padding for a spacious feel */

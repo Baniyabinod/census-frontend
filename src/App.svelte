@@ -349,7 +349,7 @@
     <div class="section-container">
       <section class="single-data-container">
         <SingleDataFetcher
-          apiUrl="/api/total-adults"
+          apiUrl=/api/total-adults"
           title="Total adult(18-79) in 1910 Census"
           dataKey="Number_of_Adults"
         />
@@ -362,7 +362,7 @@
         />
       </section>
     </div>
-
+<!-- 
     <section class="card-container">
       <PopulationByAge
         apiUrl="/api/population-by-age-group"
@@ -370,8 +370,8 @@
         labelField="kjonn"
         valueField="Number_of_Persons"
       />
-    </section>
-    <section class="card-container">
+    </section> -->
+    <!-- <section class="card-container">
       <SummaryCard
         apiUrl="/api/population-by-gender"
         title="Gender Distribution"
@@ -379,8 +379,8 @@
         labelField="kjonn"
         valueField="Number_of_Persons"
       />
-    </section>
-    <section class="card-container">
+    </section> -->
+    <!-- <section class="card-container">
       <SummaryCard
         apiUrl="/api/population-by-residence-status"
         title="Population by residence status"
@@ -388,43 +388,39 @@
         labelField="bostatus"
         valueField="Number_of_Persons"
       />
-    </section>
+    </section> -->
 
-    <section class="table-container">
+    <!-- <section class="table-container">
       <DataTable
         title="Names of people(norwegian ethnicity)"
         columns={["first name", "last name"]}
         apiUrl="/api/population-by-names"
         transformData={mapNames}
       />
-    </section>
+    </section> -->
 
-    <section class="table-container">
+    <!-- <section class="table-container">
       <DataTable
         title="Population by Municipality"
         columns={["kommunenr", "name", "Number_of_Persons"]}
         apiUrl="/api/population-by-municipality"
         transformData={mapPopulationData}
       />
-    </section>
+    </section> -->
 
-    <section class="chart-container">
+    <!-- <section class="chart-container">
       <Chart
-        apiUrl="/api/population-by-group"
+        apiUrl="api/population-by-group"
         title="Population in chart "
         statusMap={religionMap}
         label="Number of Persons by Religion"
         labelField="religion"
         itemMapping={(item) => item.Number_of_Persons}
       />
-    </section>
+    </section> -->
 
     <NewPopulationPyramid />
   </div>
-
-  <footer class="footer">
-    <p>&copy; UiT</p>
-  </footer>
 </main>
 
 <style>
